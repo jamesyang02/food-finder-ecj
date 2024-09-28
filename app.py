@@ -24,7 +24,7 @@ def analyze():
 
     headers = {
         "Authorization": "Api-Key " + SECRET_KEY,
-        "Access-Control-Allow-Origin": "food-finder-ecj-next-1qclp2o0g-james-yangs-projects-b85f648d.vercel.app"
+        "Access-Control-Allow-Origin": "https://food-finder-ecj-next.vercel.app"
         }
     response = requests.post(url, headers=headers, files={"image": request.files.get("file")})
     if response.ok:
