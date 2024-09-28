@@ -8,7 +8,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/')
+    fetch('https://food-finder-dr3kfl0iz-james-yangs-projects-b85f648d.vercel.app/api/')
       .then(res => res.json())
       .then(data => {
         setMessage(data.message);

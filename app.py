@@ -22,7 +22,10 @@ def analyze():
     SECRET_KEY = os.getenv("FOODVISOR_SECRET_KEY")
     url = "https://vision.foodvisor.io/api/1.0/en/analysis/"
 
-    headers = {"Authorization": "Api-Key " + SECRET_KEY}
+    headers = {
+        "Authorization": "Api-Key " + SECRET_KEY,
+        "Access-Control-Allow-Origin": "food-finder-ecj-next-1qclp2o0g-james-yangs-projects-b85f648d.vercel.app"
+        }
     response = requests.post(url, headers=headers, files={"image": request.files.get("file")})
     if response.ok:
         data = response.json()

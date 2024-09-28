@@ -15,7 +15,7 @@ export default function FileUpload() {
     // Call the FoodVisor query
     const formData = new FormData();
     formData.append('file', file);
-    axios.post('/api/analyze', formData)
+    axios.post('https://food-finder-dr3kfl0iz-james-yangs-projects-b85f648d.vercel.app/api/analyze', formData)
     .then((res) => {    
       console.log(res.data);
     })
