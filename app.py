@@ -53,7 +53,9 @@ def groq():
     )
 
     # get the list of items from the request
-    item_list = request.json["itemsList"]
+    item_list = request.json.get("items")
+    if not item_list:
+        return make_response("Couldn't find any food items, sorry!", 200)
 
     chat_completion = client.chat.completions.create(
         messages=[
@@ -65,7 +67,10 @@ def groq():
         model="llama3-8b-8192",
     )
     print(chat_completion.choices[0].message.content)
-    return jsonify(chat_completion.choices[0].message.content)
+    if chat_completion.choices[0]:
+        return jsonify(chat_completion.choices[0].message.content)
+    else:
+        return make_response("No response from Groq", 200)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
