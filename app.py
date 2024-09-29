@@ -15,11 +15,14 @@ CORS(app)
 def home():
     return render_template("index.html")
 
+# TOP SECRET
 @app.route("/nothingspecial")
 def nothingspecial():
     return render_template("nothingspecial.html")
 
+# Unused route
 # test the API, loads on the home page
+# Used to be used to verify during development, might still be useful
 # acts as a "server up or down" test
 @app.route("/api")
 def test():
@@ -28,6 +31,9 @@ def test():
     })
 
 # submit a POST request to the Foodvisor API
+# takes a JSON containing an image file and sends it to the Foodvisor API for analysis
+# Attaches the required headers to allow the request to go through (CORS preflight OPTIONS check)
+# this is really bulky and should be refactored to use a data URL, or ideally store on a server and send a URL
 @app.route("/api/analyze", methods=["POST"])
 def analyze():
     SECRET_KEY = os.getenv("FOODVISOR_SECRET_KEY")
@@ -46,6 +52,8 @@ def analyze():
         return make_response(response.text, response.status_code)
     
 # submit a POST request to Groq API
+# takes a list of items in JSON format and asks for a recipe suggestion
+# Data should have only one key "items" with a list of items as the value
 @app.route("/api/groq", methods=["POST"])
 def groq():
     client = Groq(
