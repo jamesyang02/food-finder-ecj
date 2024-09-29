@@ -9,7 +9,17 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-# test the API
+# render the home page
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/nothingspecial")
+def nothingspecial():
+    return render_template("nothingspecial.html")
+
+# test the API, loads on the home page
+# acts as a "server up or down" test
 @app.route("/api")
 def test():
     return jsonify({
@@ -33,6 +43,11 @@ def analyze():
         return data
     else:
         return make_response(response.text, response.status_code)
+    
+# return results in an HTML list
+@app.route("/api/display", methods=["POST"])
+def display():
+    return render_template("results.html")
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
