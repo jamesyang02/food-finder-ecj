@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template, make_response
 from flask_cors import CORS
+from groq import Groq
 
 import os
 from dotenv import load_dotenv
@@ -44,10 +45,27 @@ def analyze():
     else:
         return make_response(response.text, response.status_code)
     
-# return results in an HTML list
-@app.route("/api/display", methods=["POST"])
-def display():
-    return render_template("results.html")
+# submit a POST request to Groq API
+@app.route("/api/groq", methods=["POST"])
+def groq():
+    client = Groq(
+        api_key=os.environ.get("GROQ_SECRET_KEY"),
+    )
+
+    # get the list of items from the request
+    item_list = request.json["itemsList"]
+
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": "I have a list of items: " + ", ".join(item_list) + ". Can you give one suggestion for a recipe?"
+            }
+        ],
+        model="llama3-8b-8192",
+    )
+    print(chat_completion.choices[0].message.content)
+    return jsonify(chat_completion.choices[0].message.content)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
